@@ -1,142 +1,167 @@
-# 🧠 Second Brain App
+# Second Brain App
 
-Aplikasi **Second Brain** berbasis Laravel untuk membantu mencatat, mengelola, dan mengingat semua tugas (_task_), tindak lanjut (_follow up_), dan aktivitas kerja secara terstruktur.
+Second Brain adalah aplikasi produktivitas berbasis Laravel untuk mengelola pekerjaan harian, tindak lanjut, dokumentasi rapat, pengelolaan aset, dan catatan pribadi dalam satu dashboard.
 
-Dirancang untuk kebutuhan nyata:
+Target penggunaan:
 
-- 🏢 **Pekerjaan Kantor**
-- 🚀 **Sidejobs / Freelance**
-- 📚 **Learning & Research**
-- ✅ **Task Harian**
+- Pekerjaan kantor
+- Proyek sampingan / freelance
+- Knowledge base pribadi
+- Tracking aktivitas harian
 
----
+## Fitur Utama
 
-## 🚀 Features
+### 1. Task Management
 
-### ✅ Task Management
+- CRUD task (buat, ubah, tandai selesai)
+- Prioritas: low, medium, high
+- Status: todo, progress, done, cancel
+- Due date dan task grouping
+- Quick Capture langsung dari dashboard
 
-- **Full CRUD**: Membuat, memperbarui, dan menyelesaikan tugas.
-- **Priority & Due Date**: Pengaturan skala prioritas dan tenggat waktu.
-- **Task Group**: Kategorisasi (Kantor, Sidejobs, Learning, dll).
+### 2. Follow Up System
 
-### 🔁 Follow Up System
+- Follow up per task
+- Reminder berdasarkan waktu
+- Status follow up: pending, done, missed
+- Timeline aktivitas dengan attachment
 
-- **Sub-tasking**: Menambahkan tindak lanjut spesifik untuk setiap tugas.
-- **Reminder**: Pengingat otomatis untuk langkah selanjutnya.
-- **Scheduling**: Penjadwalan target selesai (_due_at_).
+### 3. MOM (Minutes of Meeting)
 
-### 💬 Timeline Activity (Chat Style)
+- CRUD MOM
+- Action items di dalam MOM
+- Konversi action item menjadi Task
+- Filter dan monitoring progres action items
 
-- **Visual History**: Riwayat tindak lanjut ditampilkan dengan gaya percakapan (_chat-style_).
-- **Rich Media**: Mendukung deskripsi teks, lampiran file (_attachment_), dan stempel waktu.
+### 4. Asset Management
 
-### 📎 Attachment Support
+- CRUD asset
+- Maintenance schedule per asset
+- Riwayat maintenance (history + biaya)
+- Penandaan overdue dan upcoming maintenance
 
-- **Multi-upload**: Unggah berbagai file pendukung.
-- **Management**: Preview dan download langsung dari aplikasi melalui Laravel Storage.
+### 5. Notes (Knowledge Cards)
 
-### 🔔 Reminder System
+- Notes berbasis card UI
+- Create note via tombol action + modal
+- Pin/unpin note
+- Search notes (title/content)
+- Filter notes berdasarkan type
+- Type: general, idea, meeting, technical
+- Warna card: yellow, blue, green, gray
 
-- **Email Notification**: Notifikasi otomatis via SMTP.
-- **Status Tracking**: Pantau status _pending_, _done_, atau _missed_.
+### 6. Smart Dashboard
 
-### 🧠 Insight System
+- Statistik Task & Follow Up
+- Daily brief
+- Insight otomatis untuk task bermasalah
+- Ringkasan MOM dan Asset di dashboard utama
 
-Analisis otomatis dari linimasa:
+### 7. Global Search
 
-- Identifikasi tugas _Overdue_.
-- Deteksi progres lambat atau tanpa aktivitas.
+- Pencarian lintas modul:
+    - Task
+    - MOM
+    - Asset
 
-### ⚡ Quick Capture & Daily Brief
+### 8. Automation & Action Engine
 
-- **Instant Input**: Tambah tugas cepat dari dashboard.
-- **Daily Statistics**: Ringkasan harian untuk memulai hari dengan terorganisir.
+- Scheduler untuk reminder dan recurring task
+- Action Engine berkala untuk trigger otomatis dari kondisi data
 
-### 🔁 Recurring Task
+## Stack Teknologi
 
-- **Automation**: Mendukung tugas harian, mingguan, hingga bulanan yang dibuat otomatis oleh sistem.
+- Backend: Laravel 11+
+- Frontend: Blade + Tailwind CSS + TailAdmin components
+- Database: MySQL / MariaDB (SQLite juga bisa, dengan ekstensi PHP sqlite)
+- Scheduler: Laravel Scheduler
+- Mail: SMTP
+- File storage: Laravel public disk
 
----
-
-## 🏗️ Tech Stack
-
-- **Backend**: Laravel 11+
-- **Frontend**: TailAdmin + TailwindCSS
-- **Database**: MySQL / MariaDB
-- **Scheduler**: Laravel Scheduler
-- **Email**: SMTP (Gmail / Custom)
-- **Storage**: Laravel Storage (Public Disk)
-
----
-
-## 📁 Project Structure
+## Struktur Modul (Ringkas)
 
 ```text
 app/
-├── Models/              # Task, FollowUp, Category, Attachment
-├── Services/            # Business Logic (TaskService, InsightService)
-├── Console/Commands/    # Scheduler & Automation Commands
-├── Http/Controllers/    # Web Controllers
-database/
-├── migrations/          # Database Schema
-└── seeders/             # Initial Data & Categories
-resources/views/
-├── dashboard/           # Analytics & Quick Capture
-├── tasks/               # Management UI
-└── followups/           # Timeline UI
+	Http/Controllers/
+		TaskController.php
+		FollowUpController.php
+		MomController.php
+		AssetController.php
+		NoteController.php
+	Models/
+		Task.php
+		FollowUp.php
+		Mom.php
+		MomItem.php
+		Asset.php
+		AssetSchedule.php
+		AssetHistory.php
+		Note.php
+	Services/
+		TaskService.php
+		InsightService.php
+		DailyBriefService.php
+		ActionEngineService.php
+
+resources/views/pages/dashboard/
+	tasks.blade.php
+	moms/
+	assets/
+	notes/
+	search.blade.php
 ```
 
----
+## Instalasi
 
-## ⚙️ Installation
-
-### 1. Clone Project
+### 1. Clone repository
 
 ```bash
-git clone your-repo-url.git
+git clone <repo-url>
 cd second-brain
 ```
 
-### 2. Install Dependencies
+### 2. Install dependency
 
 ```bash
 composer install
-npm install && npm run build
+npm install
+npm run build
 ```
 
-### 3. Environment Setup
+### 3. Setup environment
 
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 4. Database & Storage
+### 4. Konfigurasi database
+
+- Set koneksi database di file `.env`
+- Jalankan migrasi:
 
 ```bash
-# Sesuaikan koneksi database di file .env
-php artisan migrate --seed
+php artisan migrate
 php artisan storage:link
 ```
 
-### 5. Run App
+### 5. Jalankan aplikasi
 
 ```bash
 php artisan serve
 ```
 
----
+## Scheduler (Wajib untuk Automation)
 
-## ⏰ Scheduler & Email
-
-Aplikasi memerlukan scheduler aktif untuk fitur pengingat:
+Untuk local development:
 
 ```bash
-# Jalankan secara lokal untuk testing
 php artisan schedule:work
 ```
 
-**Konfigurasi Email (.env):**
+Untuk production, jalankan scheduler via cron agar trigger reminder dan action engine berjalan otomatis.
+
+## Konfigurasi Email (Opsional tapi direkomendasikan)
 
 ```env
 MAIL_MAILER=smtp
@@ -145,31 +170,29 @@ MAIL_PORT=587
 MAIL_USERNAME=your_email@gmail.com
 MAIL_PASSWORD=your_app_password
 MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your_email@gmail.com
+MAIL_FROM_NAME="Second Brain"
 ```
 
----
+## Catatan SQLite
 
-## 🎯 Use Case
+Jika memakai SQLite, pastikan ekstensi PHP sqlite aktif.
 
-- **Task**: Follow up Client A.
-- **Follow Up**: Kirim penawaran (Upload PDF).
-- **Next Step**: Jadwalkan telepon konfirmasi besok pagi.
-- **Timeline**: Semua aktivitas terekam kronologis layaknya histori chat.
+Contoh pengecekan:
 
----
+```bash
+php -m | grep -i sqlite
+```
 
-## 🧠 Philosophy
+Jika belum aktif, install ekstensi sqlite sesuai versi PHP yang digunakan.
 
-Aplikasi ini dirancang sebagai eksternal memori. Tujuannya adalah mengurangi beban kognitif agar Anda bisa fokus pada eksekusi, sementara sistem menangani detail pengingat dan riwayat progres.
+## Roadmap
 
----
-
-## 🔥 Future Improvement
-
-- [ ] AI Parsing (Natural Language Input)
-- [ ] WhatsApp Notification
-- [ ] Advanced Analytics Dashboard
+- Markdown renderer untuk notes
+- Auto-link note ke entitas (task/mom/asset) berdasarkan pattern
+- Notifikasi multi-channel
+- Analytics dashboard lanjutan
 
 ---
 
-**Developed by Saldi Sucipto**
+Developed by Saldi Sucipto
