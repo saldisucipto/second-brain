@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowUpController;
+use App\Http\Controllers\MomController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskGroupController;
 use App\Http\Controllers\UserManagementController;
@@ -102,6 +103,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserManagementController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('task-groups', TaskGroupController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('moms', MomController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
+    Route::post('moms/{mom}/create-task', [MomController::class, 'createTask'])->name('moms.create-task');
 
     // Second Brain Route
     Route::redirect('/task', '/tasks');

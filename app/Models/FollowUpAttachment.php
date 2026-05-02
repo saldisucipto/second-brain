@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class FollowUpAttachment extends Model
 {
@@ -20,6 +19,6 @@ class FollowUpAttachment extends Model
 
     public function getFileUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->file_path);
+        return asset('storage/' . ltrim($this->file_path, '/'));
     }
 }

@@ -16,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        require_once app_path('Models/ActivityLog.php');
+        require_once app_path('Http/Controllers/TaskGroupController.php');
     }
 
     /**

@@ -23,6 +23,11 @@ class MenuHelper
                 'path' => '/task-groups',
             ],
             [
+                'icon' => 'mom',
+                'name' => 'MOM',
+                'path' => '/moms',
+            ],
+            [
                 'icon' => 'users',
                 'name' => 'Users',
                 'path' => '/users',
@@ -120,6 +125,8 @@ class MenuHelper
             'users' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 11.25C17.5188 11.25 18.75 10.0188 18.75 8.5C18.75 6.98122 17.5188 5.75 16 5.75C14.4812 5.75 13.25 6.98122 13.25 8.5C13.25 10.0188 14.4812 11.25 16 11.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M8 11.25C9.51878 11.25 10.75 10.0188 10.75 8.5C10.75 6.98122 9.51878 5.75 8 5.75C6.48122 5.75 5.25 6.98122 5.25 8.5C5.25 10.0188 6.48122 11.25 8 11.25Z" stroke="currentColor" stroke-width="1.5"/><path d="M3.75 18.25C3.75 15.9028 5.65279 14 8 14C10.3472 14 12.25 15.9028 12.25 18.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13.75 14.333C14.3993 14.1181 15.1823 14 16 14C18.3472 14 20.25 15.9028 20.25 18.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 
             'category' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.75 6.75C4.75 5.64543 5.64543 4.75 6.75 4.75H9.25C10.3546 4.75 11.25 5.64543 11.25 6.75V9.25C11.25 10.3546 10.3546 11.25 9.25 11.25H6.75C5.64543 11.25 4.75 10.3546 4.75 9.25V6.75Z" stroke="currentColor" stroke-width="1.5"/><path d="M12.75 6.75C12.75 5.64543 13.6454 4.75 14.75 4.75H17.25C18.3546 4.75 19.25 5.64543 19.25 6.75V9.25C19.25 10.3546 18.3546 11.25 17.25 11.25H14.75C13.6454 11.25 12.75 10.3546 12.75 9.25V6.75Z" stroke="currentColor" stroke-width="1.5"/><path d="M4.75 14.75C4.75 13.6454 5.64543 12.75 6.75 12.75H9.25C10.3546 12.75 11.25 13.6454 11.25 14.75V17.25C11.25 18.3546 10.3546 19.25 9.25 19.25H6.75C5.64543 19.25 4.75 18.3546 4.75 17.25V14.75Z" stroke="currentColor" stroke-width="1.5"/><path d="M12.75 14.75C12.75 13.6454 13.6454 12.75 14.75 12.75H17.25C18.3546 12.75 19.25 13.6454 19.25 14.75V17.25C19.25 18.3546 18.3546 19.25 17.25 19.25H14.75C13.6454 19.25 12.75 18.3546 12.75 17.25V14.75Z" stroke="currentColor" stroke-width="1.5"/></svg>',
+
+            'mom' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.75 4.75C6.64543 4.75 5.75 5.64543 5.75 6.75V17.25C5.75 18.3546 6.64543 19.25 7.75 19.25H16.25C17.3546 19.25 18.25 18.3546 18.25 17.25V9.56066C18.25 9.03022 18.0393 8.52152 17.6642 8.14645L14.8536 5.33579C14.4785 4.96071 13.9698 4.75 13.4393 4.75H7.75Z" stroke="currentColor" stroke-width="1.5"/><path d="M14 4.75V8.25C14 8.80228 14.4477 9.25 15 9.25H18.25" stroke="currentColor" stroke-width="1.5"/><path d="M8.75 12H15.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8.75 15.25H13.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 
             // 'ecommerce' => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.31641 4H3.49696C4.24468 4 4.87822 4.55068 4.98234 5.29112L5.13429 6.37161M5.13429 6.37161L6.23641 14.2089C6.34053 14.9493 6.97407 15.5 7.72179 15.5L17.0833 15.5C17.6803 15.5 18.2205 15.146 18.4587 14.5986L21.126 8.47023C21.5572 7.4795 20.8312 6.37161 19.7507 6.37161H5.13429Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7.7832 19.5H7.7932M16.3203 19.5H16.3303" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
 
