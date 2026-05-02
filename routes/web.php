@@ -8,7 +8,11 @@ use App\Http\Controllers\MomController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskGroupController;
 use App\Http\Controllers\UserManagementController;
+use App\Models\Asset;
+use App\Models\AssetSchedule;
 use App\Models\FollowUp;
+use App\Models\Mom;
+use App\Models\MomItem;
 use App\Models\Task;
 use App\Models\TaskGroup;
 use App\Services\DailyBriefService;
@@ -61,6 +65,30 @@ Route::middleware('auth')->group(function () {
             $attentionTasks = collect($insightsByTask)->filter(function ($insights) {
                 return collect($insights)->contains(fn($item) => ($item['type'] ?? 'info') === 'warning');
             })->count();
+
+            $assetStats = [
+                'total' => Asset::count(),
+                'overdue' => AssetSchedule::where('next_due_at', '<', now())->count(),
+            ];
+
+            $momStats = [
+                'total' => Mom::where('created_by', auth()->id())->count(),
+                'ongoing' => Mom::where('created_by', auth()->id())->where('status', 'ongoing')->count(),
+                'pendingItems' => MomItem::whereHas('mom', fn($q) => $q->where('created_by', auth()->id()))
+                    ->where('status', 'pending')->count(),
+            ];
+
+            $recentMoms = Mom::where('created_by', auth()->id())
+                ->withCount(['items', 'items as pending_items_count' => fn($q) => $q->where('status', 'pending')])
+                ->latest('meeting_date')
+                ->take(5)
+                ->get();
+
+            $upcomingMaintenances = AssetSchedule::with('asset')
+                ->where('next_due_at', '>=', now())
+                ->orderBy('next_due_at')
+                ->take(5)
+                ->get();
         } catch (\Throwable) {
             $taskStats = [
                 'total' => 0,
@@ -87,6 +115,10 @@ Route::middleware('auth')->group(function () {
             ];
             $insightsByTask = [];
             $attentionTasks = 0;
+            $assetStats = ['total' => 0, 'overdue' => 0];
+            $momStats = ['total' => 0, 'ongoing' => 0, 'pendingItems' => 0];
+            $recentMoms = collect();
+            $upcomingMaintenances = collect();
         }
 
         return view('pages.dashboard.tasks', [
@@ -99,6 +131,10 @@ Route::middleware('auth')->group(function () {
             'brief' => $brief,
             'insightsByTask' => $insightsByTask,
             'attentionTasks' => $attentionTasks,
+            'assetStats' => $assetStats,
+            'momStats' => $momStats,
+            'recentMoms' => $recentMoms,
+            'upcomingMaintenances' => $upcomingMaintenances,
         ]);
     })->name('dashboard');
 
@@ -106,6 +142,44 @@ Route::middleware('auth')->group(function () {
     Route::resource('task-groups', TaskGroupController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('moms', MomController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
     Route::post('moms/{mom}/create-task', [MomController::class, 'createTask'])->name('moms.create-task');
+
+    Route::get('/search', function () {
+        $q = trim(request('q', ''));
+        if ($q === '') {
+            return redirect()->route('dashboard');
+        }
+
+        $tasks = Task::where('title', 'like', "%{$q}%")
+            ->orWhere('description', 'like', "%{$q}%")
+            ->latest()
+            ->take(20)
+            ->get();
+
+        $moms = Mom::where('created_by', auth()->id())
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('description', 'like', "%{$q}%")
+                    ->orWhere('location', 'like', "%{$q}%");
+            })
+            ->latest('meeting_date')
+            ->take(20)
+            ->get();
+
+        $assets = Asset::where('name', 'like', "%{$q}%")
+            ->orWhere('category', 'like', "%{$q}%")
+            ->orWhere('note', 'like', "%{$q}%")
+            ->latest()
+            ->take(20)
+            ->get();
+
+        return view('pages.dashboard.search', [
+            'title' => "Hasil Pencarian: {$q}",
+            'q' => $q,
+            'tasks' => $tasks,
+            'moms' => $moms,
+            'assets' => $assets,
+        ]);
+    })->name('search');
 
     // Asset Management
     Route::resource('assets', AssetController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);

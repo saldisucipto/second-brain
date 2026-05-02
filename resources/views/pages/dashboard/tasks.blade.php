@@ -132,6 +132,57 @@
       </div>
     </div>
 
+    {{-- Module Overview: Assets & MOMs --}}
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <a href="{{ route('assets.index') }}" class="group rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-brand-300 dark:border-gray-800 dark:bg-white/[0.03] dark:hover:border-brand-700">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Asset Management</p>
+            <h3 class="mt-2 text-3xl font-semibold text-gray-800 dark:text-white/90">{{ $assetStats['total'] ?? 0 }}</h3>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Total aset terdaftar</p>
+            @if (($assetStats['overdue'] ?? 0) > 0)
+              <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700 dark:bg-red-500/15 dark:text-red-400">
+                {{ $assetStats['overdue'] }} jadwal overdue
+              </span>
+            @else
+              <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/15 dark:text-green-400">
+                Semua jadwal on track
+              </span>
+            @endif
+          </div>
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </a>
+
+      <a href="{{ route('moms.index') }}" class="group rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-brand-300 dark:border-gray-800 dark:bg-white/[0.03] dark:hover:border-brand-700">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Minutes of Meeting</p>
+            <h3 class="mt-2 text-3xl font-semibold text-gray-800 dark:text-white/90">{{ $momStats['total'] ?? 0 }}</h3>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $momStats['ongoing'] ?? 0 }} ongoing &middot; {{ $momStats['pendingItems'] ?? 0 }} action item pending</p>
+            @if (($momStats['pendingItems'] ?? 0) > 0)
+              <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400">
+                {{ $momStats['pendingItems'] }} item butuh perhatian
+              </span>
+            @else
+              <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-500/15 dark:text-green-400">
+                Semua action item selesai
+              </span>
+            @endif
+          </div>
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-500/15 dark:text-teal-400">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </a>
+    </div>
+
     <div class="grid grid-cols-12 gap-4 md:gap-6">
       <div class="col-span-12 space-y-6 xl:col-span-7">
         <x-common.component-card title="Quick Capture" desc="Input cepat task + kategori tanpa keluar dari dashboard.">
@@ -318,6 +369,74 @@
               <div class="rounded-xl border border-dashed border-gray-200 px-4 py-8 text-center dark:border-gray-800">
                 <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Tidak ada follow-up pending.</p>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Saat ada reminder, daftar terdekat muncul di sini.</p>
+              </div>
+            @endforelse
+          </div>
+        </div>
+
+        {{-- Recent MOMs --}}
+        <div class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+          <div class="mb-5 flex items-center justify-between gap-3">
+            <div>
+              <h3 class="text-base font-medium text-gray-800 dark:text-white/90">Recent MOMs</h3>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Minutes of Meeting terbaru.</p>
+            </div>
+            <a href="{{ route('moms.index') }}" class="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400">View all</a>
+          </div>
+
+          <div class="space-y-3">
+            @forelse ($recentMoms as $mom)
+              <a href="{{ route('moms.show', $mom) }}" class="block rounded-xl border border-gray-100 p-4 transition hover:border-brand-200 dark:border-gray-800 dark:hover:border-brand-700">
+                <div class="flex items-start justify-between gap-3">
+                  <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ $mom->title }}</p>
+                  @php
+                    $momStatusColor = ['draft' => 'light', 'ongoing' => 'warning', 'closed' => 'success'][$mom->status] ?? 'light';
+                  @endphp
+                  <x-ui.badge color="{{ $momStatusColor }}">{{ $mom->status }}</x-ui.badge>
+                </div>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ \Carbon\Carbon::parse($mom->meeting_date)->format('d M Y') }}</p>
+                @if ($mom->pending_items_count > 0)
+                  <p class="mt-2 text-xs font-medium text-yellow-600 dark:text-yellow-400">{{ $mom->pending_items_count }} action item pending</p>
+                @endif
+              </a>
+            @empty
+              <div class="rounded-xl border border-dashed border-gray-200 px-4 py-8 text-center dark:border-gray-800">
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Belum ada MOM.</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Buat MOM pertama dari menu Minutes of Meeting.</p>
+              </div>
+            @endforelse
+          </div>
+        </div>
+
+        {{-- Upcoming Asset Maintenance --}}
+        <div class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+          <div class="mb-5 flex items-center justify-between gap-3">
+            <div>
+              <h3 class="text-base font-medium text-gray-800 dark:text-white/90">Upcoming Maintenance</h3>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Jadwal perawatan aset berikutnya.</p>
+            </div>
+            <a href="{{ route('assets.index') }}" class="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400">View all</a>
+          </div>
+
+          <div class="space-y-3">
+            @forelse ($upcomingMaintenances as $schedule)
+              <a href="{{ route('assets.show', $schedule->asset) }}" class="block rounded-xl border border-gray-100 p-4 transition hover:border-brand-200 dark:border-gray-800 dark:hover:border-brand-700">
+                <p class="text-sm font-medium text-gray-800 dark:text-white/90">{{ $schedule->title }}</p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $schedule->asset?->name }}</p>
+                @php
+                  $daysLeft = today()->diffInDays(\Carbon\Carbon::parse($schedule->next_due_at)->startOfDay(), false);
+                @endphp
+                <p class="mt-2 text-xs font-medium {{ $daysLeft <= 3 ? 'text-red-600 dark:text-red-400' : 'text-brand-500 dark:text-brand-400' }}">
+                  {{ \Carbon\Carbon::parse($schedule->next_due_at)->format('d M Y') }}
+                  @if ($daysLeft === 0) &middot; Hari ini
+                  @elseif ($daysLeft > 0) &middot; {{ $daysLeft }} hari lagi
+                  @endif
+                </p>
+              </a>
+            @empty
+              <div class="rounded-xl border border-dashed border-gray-200 px-4 py-8 text-center dark:border-gray-800">
+                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Tidak ada jadwal maintenance.</p>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Tambahkan jadwal dari halaman Asset.</p>
               </div>
             @endforelse
           </div>
