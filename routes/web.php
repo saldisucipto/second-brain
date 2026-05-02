@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\MomController;
@@ -105,6 +106,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('task-groups', TaskGroupController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('moms', MomController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
     Route::post('moms/{mom}/create-task', [MomController::class, 'createTask'])->name('moms.create-task');
+
+    // Asset Management
+    Route::resource('assets', AssetController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::get('assets/{asset}/schedule/create', [AssetController::class, 'createSchedule'])->name('assets.schedule.create');
+    Route::post('assets/{asset}/schedule', [AssetController::class, 'storeSchedule'])->name('assets.schedule.store');
+    Route::get('assets/schedule/{schedule}/edit', [AssetController::class, 'editSchedule'])->name('assets.schedule.edit');
+    Route::patch('assets/schedule/{schedule}', [AssetController::class, 'updateSchedule'])->name('assets.schedule.update');
+    Route::delete('assets/schedule/{schedule}', [AssetController::class, 'destroySchedule'])->name('assets.schedule.destroy');
+    Route::post('assets/schedule/{schedule}/complete', [AssetController::class, 'completeSchedule'])->name('assets.schedule.complete');
+    Route::post('assets/{asset}/history', [AssetController::class, 'storeHistory'])->name('assets.history.store');
 
     // Second Brain Route
     Route::redirect('/task', '/tasks');
