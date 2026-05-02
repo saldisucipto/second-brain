@@ -22,11 +22,11 @@ use App\Services\InsightService;
 Route::middleware('guest')->group(function () {
     Route::get('/signin', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/signin', [AuthController::class, 'login'])->name('login.store');
-    Route::get('/signup', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/signup', [AuthController::class, 'register'])->name('register.store');
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/signup', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/signup', [AuthController::class, 'register'])->name('register.store');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // dashboard pages

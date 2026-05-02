@@ -74,13 +74,6 @@
                             </button>
                         </div>
                     </form>
-
-                    <div class="mt-5">
-                        <p class="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
-                            Belum punya akun?
-                            <a href="{{ route('register') }}" class="text-brand-500 hover:text-brand-600 dark:text-brand-400">Sign Up</a>
-                        </p>
-                    </div>
                 </div>
             </div>
 
@@ -89,7 +82,7 @@
                     <x-common.common-grid-shape/>
                     <div class="flex max-w-xs flex-col items-center">
                         <a href="{{ route('login') }}" class="mb-4 block">
-                            <img src="/logo.png" alt="MySecondBrain" class="h-10 w-auto" />
+                            <img src="/logo.png" alt="MySecondBrain" class=" w-auto" />
                         </a>
                         <p class="text-center text-gray-400 dark:text-white/60">
                             Second Brain untuk task, follow-up, dan fokus pekerjaan harian.
