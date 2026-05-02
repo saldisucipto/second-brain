@@ -5,6 +5,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FollowUpController;
 use App\Http\Controllers\MomController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskGroupController;
 use App\Http\Controllers\UserManagementController;
@@ -142,6 +143,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('task-groups', TaskGroupController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('moms', MomController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update']);
     Route::post('moms/{mom}/create-task', [MomController::class, 'createTask'])->name('moms.create-task');
+    Route::resource('notes', NoteController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::get('/search', function () {
         $q = trim(request('q', ''));
