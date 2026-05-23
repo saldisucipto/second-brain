@@ -13,10 +13,7 @@ class TaskGroupSeeder extends Seeder
     public function run(): void
     {
         $groups = [
-            ['name' => 'Pekerjaan Kantor', 'slug' => 'kantor', 'color' => 'red'],
-            ['name' => 'Sidejobs', 'slug' => 'sidejobs', 'color' => 'green'],
-            ['name' => 'Learning', 'slug' => 'learning', 'color' => 'blue'],
-            ['name' => 'Another Sidejobs', 'slug' => 'another-sidejobs', 'color' => 'yellow'],
+            ['name' => 'Works', 'slug' => 'works', 'color' => 'red'],
         ];
 
         foreach ($groups as $group) {
