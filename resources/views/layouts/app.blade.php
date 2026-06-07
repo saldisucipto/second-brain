@@ -90,7 +90,7 @@
             }
         })();
     </script>
-    
+
 </head>
 
 <body
@@ -110,6 +110,7 @@
     {{-- preloader --}}
     <x-common.preloader/>
     {{-- preloader end --}}
+    <x-common.request-loading />
 
     <div class="min-h-screen xl:flex">
         @include('layouts.backdrop')

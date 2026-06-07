@@ -10,6 +10,31 @@ import { Calendar } from '@fullcalendar/core';
 
 
 
+document.addEventListener('alpine:init', () => {
+    Alpine.store('requestLoading', {
+        pending: 0,
+        get active() {
+            return this.pending > 0;
+        },
+        start() {
+            this.pending += 1;
+        },
+        stop() {
+            this.pending = Math.max(0, this.pending - 1);
+        }
+    });
+});
+
+window.addEventListener('app:loading:start', () => {
+    const loadingStore = window.Alpine?.store('requestLoading');
+    loadingStore?.start();
+});
+
+window.addEventListener('app:loading:stop', () => {
+    const loadingStore = window.Alpine?.store('requestLoading');
+    loadingStore?.stop();
+});
+
 window.Alpine = Alpine;
 window.ApexCharts = ApexCharts;
 window.flatpickr = flatpickr;
@@ -19,6 +44,28 @@ Alpine.start();
 
 // Initialize components on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('submit', (event) => {
+        const form = event.target;
+        if (!(form instanceof HTMLFormElement)) {
+            return;
+        }
+
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        if (form.dataset.loading === 'off') {
+            return;
+        }
+
+        const method = (form.getAttribute('method') || 'get').toLowerCase();
+        if (method === 'get') {
+            return;
+        }
+
+        window.dispatchEvent(new CustomEvent('app:loading:start'));
+    });
+
     // Map imports
     if (document.querySelector('#mapOne')) {
         import('./components/map').then(module => module.initMap());

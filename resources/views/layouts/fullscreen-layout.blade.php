@@ -107,6 +107,7 @@ window.addEventListener('resize', checkMobile);">
     {{-- preloader --}}
     <x-common.preloader/>
     {{-- preloader end --}}
+    <x-common.request-loading />
 
     @yield('content')
 
